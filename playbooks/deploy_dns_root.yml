@@ -1,0 +1,66 @@
+---
+- name: Deploy Shadow_Web Root DNS Infrastructure on Podman
+  hosts: dns_servers
+  gather_facts: false
+
+  vars:
+    dns_network_name: "dns-net"
+    dns_subnet: "10.89.10.0/24"
+    base_dns_dir: "{{ lookup('env', 'HOME') }}/Shadow_Web/dns/root"
+
+  tasks:
+    - name: Ensure Podman network exists
+      containers.podman.podman_network:
+        name: "{{ dns_network_name }}"
+        subnet: "{{ dns_subnet }}"
+        state: present
+
+    - name: Deploy Root-A DNS Container (10.89.10.2)
+      containers.podman.podman_container:
+        name: root-a
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network:
+          - "{{ dns_network_name }}"
+        ip: 10.89.10.2
+        volume:
+          - "{{ base_dns_dir }}/root-a/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ base_dns_dir }}/root-a/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy Root-B DNS Container (10.89.10.4)
+      containers.podman.podman_container:
+        name: root-b
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network:
+          - "{{ dns_network_name }}"
+        ip: 10.89.10.4
+        volume:
+          - "{{ base_dns_dir }}/root-b/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ base_dns_dir }}/root-b/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Verify Root-A DNS Resolution (10.89.10.2)
+      ansible.builtin.command: >
+        podman run --rm --network {{ dns_network_name }} alpine sh -c
+        "apk add --no-cache bind-tools >/dev/null && dig @10.89.10.2 . NS +short"
+      register: root_a_test
+      changed_when: false
+
+    - name: Verify Root-B DNS Resolution (10.89.10.4)
+      ansible.builtin.command: >
+        podman run --rm --network {{ dns_network_name }} alpine sh -c
+        "apk add --no-cache bind-tools >/dev/null && dig @10.89.10.4 . NS +short"
+      register: root_b_test
+      changed_when: false
+
+    - name: Display Verification Results
+      ansible.builtin.debug:
+        msg:
+          - "Root-A (10.89.10.2) NS: {{ root_a_test.stdout_lines }}"
+          - "Root-B (10.89.10.4) NS: {{ root_b_test.stdout_lines }}"

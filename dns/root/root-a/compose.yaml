@@ -1,0 +1,16 @@
+services:
+  root-a:
+    image: docker.io/coredns/coredns:latest
+    container_name: root-a
+    restart: always
+    command: -conf /etc/coredns/Corefile
+    networks:
+      dns-net:
+        ipv4_address: 10.89.10.2
+    volumes:
+      - ./Corefile:/etc/coredns/Corefile:ro
+      - ./zone:/etc/coredns/zone:ro
+
+networks:
+  dns-net:
+    external: true
