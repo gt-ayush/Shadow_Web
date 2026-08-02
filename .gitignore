@@ -1,0 +1,5 @@
+# Ignore log files and archives, but keep .gitkeep
+logs/*
+!logs/.gitkeep
+archives/*
+!archives/.gitkeep
