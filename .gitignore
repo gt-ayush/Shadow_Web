@@ -1,5 +1,41 @@
-# Ignore log files and archives, but keep .gitkeep
+# ==========================================
+# 1. Logs & Archives (Keep folders, ignore contents)
+# ==========================================
 logs/*
 !logs/.gitkeep
 archives/*
 !archives/.gitkeep
+
+# Ignore root-level log/archive files if created accidentally
+*.log
+*.tar.gz
+*.zip
+*.sql
+
+# ==========================================
+# 2. Secrets & Credentials (CRITICAL)
+# ==========================================
+*.env
+*.pem
+*.key
+*.p12
+*.crt
+id_rsa
+id_ed25519
+ansible_vault_pass.txt
+
+# ==========================================
+# 3. Ansible & System Temp Files
+# ==========================================
+*.retry
+*.pyc
+.cache/
+__pycache__/
+
+# ==========================================
+# 4. OS & Editor Junk
+# ==========================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

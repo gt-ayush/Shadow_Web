@@ -1,0 +1,22 @@
+---
+- name: Configure Dedicated Podman Networks
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    podman_networks:
+      - internet-net
+      - dns-net
+      - registry-net
+      - hosting-net
+      - mail-net
+      - monitor-net
+      - storage-net
+
+  tasks:
+    - name: Ensure dedicated Podman networks exist
+      containers.podman.podman_network:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ podman_networks }}"
