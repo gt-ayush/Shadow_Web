@@ -1,0 +1,8 @@
+$TTL 86400
+@   IN  SOA ns1.dns.mail. admin.dns.mail. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.dns.mail.
+ns1.dns.mail. IN A 10.89.10.60
+
+; Sample SLD Delegation
+secure.mail. IN NS ns1.secure.mail.
+ns1.secure.mail. IN A 10.89.60.10

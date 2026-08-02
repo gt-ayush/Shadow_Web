@@ -1,0 +1,8 @@
+$TTL 86400
+@   IN  SOA ns1.dns.shop. admin.dns.shop. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.dns.shop.
+ns1.dns.shop. IN A 10.89.10.40
+
+; Sample SLD Delegation
+store.shop. IN NS ns1.store.shop.
+ns1.store.shop. IN A 10.89.40.10

@@ -1,49 +1,51 @@
 $TTL 86400
-@   IN  SOA a.root-servers.internal. hostmaster.shadow.web. (
-        2026080301 ; Serial (YYYYMMDDNN)
-        28800      ; Refresh (8 hours)
-        7200       ; Retry (2 hours)
-        604800     ; Expire (1 week)
-        86400 )    ; Minimum TTL (1 day)
+@   IN  SOA a.root-servers.internal. root.internal. (
+            2026080302 ; serial
+            3600       ; refresh
+            1800       ; retry
+            604800     ; expire
+            86400 )    ; minimum
 
-; Root Name Servers
 @   IN  NS  a.root-servers.internal.
 @   IN  NS  b.root-servers.internal.
 
-; Glue Records for Root Name Servers (Assigned IPs on dns-net)
 a.root-servers.internal. IN A 10.89.10.2
 b.root-servers.internal. IN A 10.89.10.4
 
-; =====================================================================
-; TLD Delegations (.x, .web, .shop, .mail, .cloud, .dev)
-; =====================================================================
+; --- Top-Level Domain Delegations ---
 
-; .x TLD Delegation
-x.                  IN NS ns1.dns.x.
-x.                  IN NS ns2.dns.x.
-ns1.dns.x.          IN A  10.89.10.20
-ns2.dns.x.          IN A  10.89.10.21
+; .x TLD
+x.           IN  NS  ns1.dns.x.
+x.           IN  NS  ns2.dns.x.
+ns1.dns.x.   IN  A   10.89.10.20
+ns2.dns.x.   IN  A   10.89.10.21
 
-; .web TLD Delegation
-web.                IN NS ns1.dns.web.
-web.                IN NS ns2.dns.web.
-ns1.dns.web.        IN A  10.89.10.30
-ns2.dns.web.        IN A  10.89.10.31
+; .web TLD
+web.         IN  NS  ns1.dns.web.
+web.         IN  NS  ns2.dns.web.
+ns1.dns.web. IN  A   10.89.10.30
+ns2.dns.web. IN  A   10.89.10.31
 
-; .shop TLD Delegation
-shop.               IN NS ns1.dns.shop.
-shop.               IN NS ns2.dns.shop.
-ns1.dns.shop.       IN A  10.89.10.40
-ns2.dns.shop.       IN A  10.89.10.41
+; .shop TLD
+shop.        IN  NS  ns1.dns.shop.
+shop.        IN  NS  ns2.dns.shop.
+ns1.dns.shop. IN A   10.89.10.40
+ns2.dns.shop. IN A   10.89.10.41
 
-; .mail TLD Delegation
-mail.               IN NS ns1.dns.mail.
-ns1.dns.mail.       IN A  10.89.10.50
+; .cloud TLD
+cloud.        IN NS  ns1.dns.cloud.
+cloud.        IN NS  ns2.dns.cloud.
+ns1.dns.cloud. IN A  10.89.10.50
+ns2.dns.cloud. IN A  10.89.10.51
 
-; .cloud TLD Delegation
-cloud.              IN NS ns1.dns.cloud.
-ns1.dns.cloud.      IN A  10.89.10.60
+; .mail TLD
+mail.         IN NS  ns1.dns.mail.
+mail.         IN NS  ns2.dns.mail.
+ns1.dns.mail. IN A   10.89.10.60
+ns2.dns.mail. IN A   10.89.10.61
 
-; .dev TLD Delegation
-dev.                IN NS ns1.dns.dev.
-ns1.dns.dev.        IN A  10.89.10.70
+; .dev TLD
+dev.          IN NS  ns1.dns.dev.
+dev.          IN NS  ns2.dns.dev.
+ns1.dns.dev.  IN A   10.89.10.70
+ns2.dns.dev.  IN A   10.89.10.71

@@ -1,0 +1,5 @@
+dev. {
+file /etc/coredns/zone/db.dev
+log
+errors
+}

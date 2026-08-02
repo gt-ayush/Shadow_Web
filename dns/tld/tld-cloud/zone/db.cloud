@@ -1,0 +1,8 @@
+$TTL 86400
+@   IN  SOA ns1.dns.cloud. admin.dns.cloud. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.dns.cloud.
+ns1.dns.cloud. IN A 10.89.10.50
+
+; Sample SLD Delegation
+cluster.cloud. IN NS ns1.cluster.cloud.
+ns1.cluster.cloud. IN A 10.89.50.10

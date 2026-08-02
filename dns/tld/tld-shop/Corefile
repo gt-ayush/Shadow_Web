@@ -1,0 +1,5 @@
+shop. {
+file /etc/coredns/zone/db.shop
+log
+errors
+}

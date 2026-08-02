@@ -1,0 +1,5 @@
+cloud. {
+file /etc/coredns/zone/db.cloud
+log
+errors
+}

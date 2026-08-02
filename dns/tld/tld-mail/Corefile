@@ -1,0 +1,5 @@
+mail. {
+file /etc/coredns/zone/db.mail
+log
+errors
+}

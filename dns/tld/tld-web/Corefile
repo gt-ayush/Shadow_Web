@@ -1,0 +1,5 @@
+web. {
+    file /etc/coredns/zone/db.web
+    log
+    errors
+}

@@ -1,0 +1,18 @@
+$TTL 86400
+@   IN  SOA ns1.dns.web. admin.dns.web. (
+            2026080301 ; serial
+            3600       ; refresh
+            1800       ; retry
+            604800     ; expire
+            86400 )    ; minimum
+
+@   IN  NS  ns1.dns.web.
+@   IN  NS  ns2.dns.web.
+
+; Glue records for .web TLD NS itself
+ns1.dns.web.   IN  A   10.89.10.30
+ns2.dns.web.   IN  A   10.89.10.31
+
+; --- Subdomain / SLD Delegations ---
+shop.web.   IN  NS  ns1.shop.web.
+ns1.shop.web.  IN  A   10.89.30.10

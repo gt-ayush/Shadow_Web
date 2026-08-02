@@ -1,0 +1,8 @@
+$TTL 86400
+@   IN  SOA ns1.dns.dev. admin.dns.dev. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.dns.dev.
+ns1.dns.dev. IN A 10.89.10.70
+
+; Sample SLD Delegation
+lab.dev. IN NS ns1.lab.dev.
+ns1.lab.dev. IN A 10.89.70.10

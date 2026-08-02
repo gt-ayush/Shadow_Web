@@ -1,0 +1,93 @@
+---
+- name: Deploy Phase 4 - All TLD Name Servers
+  hosts: dns_servers
+  gather_facts: false
+
+  vars:
+    dns_network_name: "dns-net"
+    tld_base_dir: "{{ lookup('env', 'HOME') }}/Shadow_Web/dns/tld"
+
+  tasks:
+    - name: Deploy tld-x-01 Container (10.89.10.20)
+      containers.podman.podman_container:
+        name: tld-x-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.10.20
+        volume:
+          - "{{ tld_base_dir }}/tld-x/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ tld_base_dir }}/tld-x/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy tld-web-01 Container (10.89.10.30)
+      containers.podman.podman_container:
+        name: tld-web-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.10.30
+        volume:
+          - "{{ tld_base_dir }}/tld-web/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ tld_base_dir }}/tld-web/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy tld-shop-01 Container (10.89.10.40)
+      containers.podman.podman_container:
+        name: tld-shop-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.10.40
+        volume:
+          - "{{ tld_base_dir }}/tld-shop/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ tld_base_dir }}/tld-shop/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy tld-cloud-01 Container (10.89.10.50)
+      containers.podman.podman_container:
+        name: tld-cloud-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.10.50
+        volume:
+          - "{{ tld_base_dir }}/tld-cloud/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ tld_base_dir }}/tld-cloud/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy tld-mail-01 Container (10.89.10.60)
+      containers.podman.podman_container:
+        name: tld-mail-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.10.60
+        volume:
+          - "{{ tld_base_dir }}/tld-mail/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ tld_base_dir }}/tld-mail/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy tld-dev-01 Container (10.89.10.70)
+      containers.podman.podman_container:
+        name: tld-dev-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.10.70
+        volume:
+          - "{{ tld_base_dir }}/tld-dev/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ tld_base_dir }}/tld-dev/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"

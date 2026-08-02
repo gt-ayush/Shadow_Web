@@ -1,0 +1,34 @@
+---
+- name: Deploy Phase 3 - Private Recursive Resolver
+  hosts: dns_servers
+  gather_facts: false
+
+  vars:
+    dns_network_name: "dns-net"
+    resolver_dir: "{{ lookup('env', 'HOME') }}/Shadow_Web/dns/resolver/resolver-01"
+
+  tasks:
+    - name: Deploy Resolver-01 CoreDNS Container (10.89.10.10)
+      containers.podman.podman_container:
+        name: resolver-01
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network:
+          - "{{ dns_network_name }}"
+        ip: 10.89.10.10
+        volume:
+          - "{{ resolver_dir }}/Corefile:/etc/coredns/Corefile:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Verify Resolver-01 Root Query (10.89.10.10)
+      ansible.builtin.command: >
+        podman run --rm --network {{ dns_network_name }} alpine sh -c
+        "apk add --no-cache bind-tools >/dev/null && dig @10.89.10.10 . NS +short"
+      register: resolver_test
+      changed_when: false
+
+    - name: Display Resolver Output
+      ansible.builtin.debug:
+        msg: "Resolver-01 returned root NS: {{ resolver_test.stdout_lines }}"

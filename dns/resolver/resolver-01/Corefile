@@ -1,0 +1,6 @@
+. {
+forward . 10.89.10.2 10.89.10.4
+log
+errors
+cache
+}

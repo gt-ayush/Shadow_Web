@@ -1,0 +1,5 @@
+x. {
+    file /etc/coredns/zone/db.x
+    log
+    errors
+}
