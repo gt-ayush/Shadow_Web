@@ -1,0 +1,7 @@
+$TTL 86400
+@   IN  SOA ns1.lab.dev. admin.lab.dev. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.lab.dev.
+ns1 IN  A   10.89.70.10
+
+@   IN  A   10.89.70.100
+git IN  A   10.89.70.101

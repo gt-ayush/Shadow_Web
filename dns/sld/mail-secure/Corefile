@@ -1,0 +1,5 @@
+secure.mail. {
+file /etc/coredns/zone/db.secure.mail
+log
+errors
+}

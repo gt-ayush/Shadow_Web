@@ -1,0 +1,7 @@
+$TTL 86400
+@   IN  SOA ns1.store.shop. admin.store.shop. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.store.shop.
+ns1 IN  A   10.89.40.10
+
+@   IN  A   10.89.40.100
+api IN  A   10.89.40.101

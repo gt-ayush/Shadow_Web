@@ -1,0 +1,93 @@
+---
+- name: Deploy Phase 5 - All SLD Authoritative Name Servers
+  hosts: dns_servers
+  gather_facts: false
+
+  vars:
+    dns_network_name: "dns-net"
+    sld_base_dir: "{{ lookup('env', 'HOME') }}/Shadow_Web/dns/sld"
+
+  tasks:
+    - name: Deploy ns-example-x Container (10.89.20.10)
+      containers.podman.podman_container:
+        name: ns-example-x
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.20.10
+        volume:
+          - "{{ sld_base_dir }}/example-x/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ sld_base_dir }}/example-x/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy ns-shop-web Container (10.89.30.10)
+      containers.podman.podman_container:
+        name: ns-shop-web
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.30.10
+        volume:
+          - "{{ sld_base_dir }}/shop-web/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ sld_base_dir }}/shop-web/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy ns-store-shop Container (10.89.40.10)
+      containers.podman.podman_container:
+        name: ns-store-shop
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.40.10
+        volume:
+          - "{{ sld_base_dir }}/shop-store/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ sld_base_dir }}/shop-store/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy ns-cluster-cloud Container (10.89.50.10)
+      containers.podman.podman_container:
+        name: ns-cluster-cloud
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.50.10
+        volume:
+          - "{{ sld_base_dir }}/cloud-cluster/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ sld_base_dir }}/cloud-cluster/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy ns-secure-mail Container (10.89.60.10)
+      containers.podman.podman_container:
+        name: ns-secure-mail
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.60.10
+        volume:
+          - "{{ sld_base_dir }}/mail-secure/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ sld_base_dir }}/mail-secure/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"
+
+    - name: Deploy ns-lab-dev Container (10.89.70.10)
+      containers.podman.podman_container:
+        name: ns-lab-dev
+        image: docker.io/coredns/coredns:latest
+        state: started
+        recreate: true
+        restart_policy: always
+        network: ["{{ dns_network_name }}"]
+        ip: 10.89.70.10
+        volume:
+          - "{{ sld_base_dir }}/dev-lab/Corefile:/etc/coredns/Corefile:ro"
+          - "{{ sld_base_dir }}/dev-lab/zone:/etc/coredns/zone:ro"
+        command: "-conf /etc/coredns/Corefile"

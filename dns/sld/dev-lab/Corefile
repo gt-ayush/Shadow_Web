@@ -1,0 +1,5 @@
+lab.dev. {
+file /etc/coredns/zone/db.lab.dev
+log
+errors
+}

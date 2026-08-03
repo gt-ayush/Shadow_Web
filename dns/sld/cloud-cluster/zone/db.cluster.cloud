@@ -1,0 +1,7 @@
+$TTL 86400
+@   IN  SOA ns1.cluster.cloud. admin.cluster.cloud. ( 2026080301 3600 1800 604800 86400 )
+@   IN  NS  ns1.cluster.cloud.
+ns1 IN  A   10.89.50.10
+
+@   IN  A   10.89.50.100
+node1 IN A  10.89.50.101

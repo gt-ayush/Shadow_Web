@@ -1,0 +1,5 @@
+cluster.cloud. {
+file /etc/coredns/zone/db.cluster.cloud
+log
+errors
+}
