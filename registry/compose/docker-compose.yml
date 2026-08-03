@@ -1,0 +1,62 @@
+version: '3.8'
+
+networks:
+  dns-net:
+    external: true
+
+services:
+  registry-db:
+    image: docker.io/library/postgres:16-alpine
+    container_name: registry-db
+    environment:
+      POSTGRES_USER: registry_admin
+      POSTGRES_PASSWORD: secure_registry_password
+      POSTGRES_DB: tld_registry
+    networks:
+      dns-net:
+        ipv4_address: 10.89.0.10
+    volumes:
+      - registry_data:/var/lib/postgresql/data
+      - ../database/migrations:/docker-entrypoint-initdb.d:z
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U registry_admin -d tld_registry"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  registry-redis:
+    image: docker.io/library/redis:7-alpine
+    container_name: registry-redis
+    networks:
+      dns-net:
+        ipv4_address: 10.89.0.11
+    restart: always
+
+  registry-api:
+    image: docker.io/library/golang:1.22-alpine
+    container_name: registry-api
+    working_dir: /app
+    volumes:
+      - ../api:/app:z
+    environment:
+      - DB_HOST=10.89.0.10
+      - DB_USER=registry_admin
+      - DB_PASSWORD=secure_registry_password
+      - DB_NAME=tld_registry
+      - REDIS_HOST=10.89.0.11:6379
+    command: go run -mod=vendor main.go
+    networks:
+      dns-net:
+        ipv4_address: 10.89.0.12
+    ports:
+      - "8081:8080"
+    restart: always
+    depends_on:
+      registry-db:
+        condition: service_healthy
+      registry-redis:
+        condition: service_started
+
+volumes:
+  registry_data:

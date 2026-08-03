@@ -39,3 +39,44 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# ==========================================
+# 5. Go Build Artifacts
+# ==========================================
+*.exe
+*.out
+*.test
+bin/
+
+# Vendor dependencies (use go.mod/go.sum instead)
+registry/api/vendor/
+
+# ==========================================
+# 6. Podman/Docker Artifacts
+# ==========================================
+*.pid
+*.sock
+*.db
+*.tar
+*.img
+*.lock
+.container-logs/
+container-data/
+volumes/
+
+# ==========================================
+# 7. Backup & Generated Files
+# ==========================================
+*.bak
+*.old
+*.orig
+*.tmp
+
+# ==========================================
+# 8. Node/Frontend (future-proofing)
+# ==========================================
+node_modules/
+dist/
+build/
