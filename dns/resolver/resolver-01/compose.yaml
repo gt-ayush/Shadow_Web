@@ -1,14 +1,14 @@
 services:
   resolver-01:
-    image: docker.io/mvance/unbound:latest
+    build: .
     container_name: resolver-01
-    restart: always
+    restart: unless-stopped
     networks:
       dns-net:
         ipv4_address: 10.89.10.10
     volumes:
-      - ./config/unbound.conf:/etc/unbound/unbound.conf:ro
-      - ./config/root.hints:/etc/unbound/root.hints:ro
+      - ./config/unbound.conf:/etc/unbound/unbound.conf:z
+      - ./config/root.hints:/etc/unbound/root.hints:z
 
 networks:
   dns-net:

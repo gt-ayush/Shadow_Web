@@ -1,5 +1,5 @@
 ---
-- name: Deploy Phase 3 - Private Recursive Resolver
+- name: Deploy Phase 3 - Private Recursive Resolver (Unbound on Alpine)
   hosts: dns_servers
   gather_facts: false
 
@@ -8,10 +8,10 @@
     resolver_dir: "{{ lookup('env', 'HOME') }}/Shadow_Web/dns/resolver/resolver-01"
 
   tasks:
-    - name: Deploy Resolver-01 CoreDNS Container (10.89.10.10)
+    - name: Deploy Resolver-01 Container (10.89.10.10)
       containers.podman.podman_container:
         name: resolver-01
-        image: docker.io/coredns/coredns:latest
+        image: docker.io/library/alpine:latest
         state: started
         recreate: true
         restart_policy: always
@@ -19,16 +19,20 @@
           - "{{ dns_network_name }}"
         ip: 10.89.10.10
         volume:
-          - "{{ resolver_dir }}/Corefile:/etc/coredns/Corefile:ro"
-        command: "-conf /etc/coredns/Corefile"
+          - "{{ resolver_dir }}/config/unbound.conf:/etc/unbound/unbound.conf:ro"
+          - "{{ resolver_dir }}/config/root.hints:/etc/unbound/root.hints:ro"
+        command:
+          - sh
+          - -c
+          - apk add --no-cache unbound && unbound -d -c /etc/unbound/unbound.conf
 
     - name: Verify Resolver-01 Root Query (10.89.10.10)
       ansible.builtin.command: >
         podman run --rm --network {{ dns_network_name }} alpine sh -c
-        "apk add --no-cache bind-tools >/dev/null && dig @10.89.10.10 . NS +short"
+        "apk add --no-cache bind-tools >/dev/null && dig @10.89.10.10 a.root A +short"
       register: resolver_test
       changed_when: false
 
     - name: Display Resolver Output
       ansible.builtin.debug:
-        msg: "Resolver-01 returned root NS: {{ resolver_test.stdout_lines }}"
+        msg: "Resolver-01 returned a.root IP: {{ resolver_test.stdout_lines }}"

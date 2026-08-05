@@ -1,5 +1,5 @@
-.                       3600000 IN NS   a.root-servers.internal.
-a.root-servers.internal. 3600000 IN A    10.89.10.2
+. 3600 IN NS a.root.
+. 3600 IN NS b.root.
 
-.                       3600000 IN NS   b.root-servers.internal.
-b.root-servers.internal. 3600000 IN A    10.89.10.4
+a.root. 3600 IN A 10.89.10.2
+b.root. 3600 IN A 10.89.10.4

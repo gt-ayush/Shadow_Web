@@ -1,16 +1,16 @@
 $TTL 86400
-@   IN  SOA a.root-servers.internal. root.internal. (
-            2026080302 ; serial
-            3600       ; refresh
+@   IN  SOA a.root. admin.root. (
+            2026080503 ; serial
+            7200       ; refresh
             1800       ; retry
             604800     ; expire
             86400 )    ; minimum
 
-@   IN  NS  a.root-servers.internal.
-@   IN  NS  b.root-servers.internal.
+@   IN  NS  a.root.
+@   IN  NS  b.root.
 
-a.root-servers.internal. IN A 10.89.10.2
-b.root-servers.internal. IN A 10.89.10.4
+a.root. IN A 10.89.10.2
+b.root. IN A 10.89.10.4
 
 ; --- Top-Level Domain Delegations ---
 
@@ -33,19 +33,19 @@ ns1.dns.shop. IN A   10.89.10.40
 ns2.dns.shop. IN A   10.89.10.41
 
 ; .cloud TLD
-cloud.        IN NS  ns1.dns.cloud.
-cloud.        IN NS  ns2.dns.cloud.
+cloud.       IN NS   ns1.dns.cloud.
+cloud.       IN NS   ns2.dns.cloud.
 ns1.dns.cloud. IN A  10.89.10.50
 ns2.dns.cloud. IN A  10.89.10.51
 
 ; .mail TLD
-mail.         IN NS  ns1.dns.mail.
-mail.         IN NS  ns2.dns.mail.
+mail.        IN NS   ns1.dns.mail.
+mail.        IN NS   ns1.dns.mail.
 ns1.dns.mail. IN A   10.89.10.60
 ns2.dns.mail. IN A   10.89.10.61
 
 ; .dev TLD
-dev.          IN NS  ns1.dns.dev.
-dev.          IN NS  ns2.dns.dev.
+dev.         IN NS   ns1.dns.dev.
+dev.         IN NS   ns2.dns.dev.
 ns1.dns.dev.  IN A   10.89.10.70
 ns2.dns.dev.  IN A   10.89.10.71
