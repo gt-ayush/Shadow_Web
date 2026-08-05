@@ -193,4 +193,78 @@ func recordTransaction(domain, operation, registrar, status string) {
 
 func generateAndPublishZone(tld string) {
 	log.Printf("Generating updated zone file for TLD: .%s", tld)
+
+	// 1. Query active domains and their nameservers for this TLD
+	query := `
+		SELECT d.domain, ns.hostname, ns.ipv4 
+		FROM domains d
+		JOIN nameservers ns ON d.id = ns.domain_id
+		WHERE d.tld = $1 AND d.status = 'active'
+	`
+	rows, err := db.Query(query, tld)
+	if err != nil {
+		log.Printf("Failed to query domains for TLD .%s: %v", tld, err)
+		return
+	}
+	defer rows.Close()
+
+	type delegationRecord struct {
+		Hostname string
+		IPv4     string
+	}
+
+	delegations := make(map[string][]delegationRecord)
+	for rows.Next() {
+		var domain, hostname, ipv4 string
+		if err := rows.Scan(&domain, &hostname, &ipv4); err != nil {
+			log.Printf("Error scanning row: %v", err)
+			continue
+		}
+		delegations[domain] = append(delegations[domain], delegationRecord{
+			Hostname: hostname,
+			IPv4:     ipv4,
+		})
+	}
+
+	// 2. Build TLD Zone File Content
+	var sb strings.Builder
+	serial := time.Now().Format("2006010201")
+	sb.WriteString("$TTL 86400\n")
+	sb.WriteString(fmt.Sprintf("@   IN  SOA ns1.nic.%s. hostmaster.nic.%s. (\n", tld, tld))
+	sb.WriteString(fmt.Sprintf("        %s ; Serial\n", serial))
+	sb.WriteString("        3600       ; Refresh\n")
+	sb.WriteString("        1800       ; Retry\n")
+	sb.WriteString("        604800     ; Expire\n")
+	sb.WriteString("        86400 )    ; Minimum TTL\n\n")
+	sb.WriteString(fmt.Sprintf("@   IN  NS  ns1.nic.%s.\n\n", tld))
+
+	for domain, nsList := range delegations {
+		sb.WriteString(fmt.Sprintf("; Delegations for %s\n", domain))
+		for _, ns := range nsList {
+			sb.WriteString(fmt.Sprintf("%s. IN NS %s.\n", domain, ns.Hostname))
+			if ns.IPv4 != "" {
+				sb.WriteString(fmt.Sprintf("%s. IN A  %s\n", ns.Hostname, ns.IPv4))
+			}
+		}
+		sb.WriteString("\n")
+	}
+
+	// 3. Write zone file to published directory
+	zoneDirPath := os.Getenv("ZONE_OUTPUT_DIR")
+	if zoneDirPath == "" {
+		zoneDirPath = "/app/zones"
+	}
+	if err := os.MkdirAll(zoneDirPath, 0755); err != nil {
+		log.Printf("Failed to create zone directory: %v", err)
+		return
+	}
+
+	zoneFilePath := fmt.Sprintf("%s/db.%s", zoneDirPath, tld)
+	err = os.WriteFile(zoneFilePath, []byte(sb.String()), 0644)
+	if err != nil {
+		log.Printf("Failed to write zone file for .%s: %v", tld, err)
+		return
+	}
+
+	log.Printf("Successfully generated and published zone file for .%s at %s", tld, zoneFilePath)
 }
