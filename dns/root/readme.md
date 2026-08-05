@@ -15,16 +15,20 @@ This component establishes the redundant, authoritative root zone (`.`) layer fo
 
 ## 📁 Directory Structure
 
-```text
-dns/
-└── root/
-    ├── root-a/
-    │   ├── Corefile
-    │   └── db.root
-    └── root-b/
-        ├── Corefile
+```bash
+~/Shadow_Web/dns/root$ tree
+.
+├── readme.md
+├── root-a
+│   ├── Corefile
+│   ├── compose.yaml
+│   └── zone
+│       └── db.root
+└── root-b
+    ├── Corefile
+    ├── compose.yaml
+    └── zone
         └── db.root
-
 ```
 
 ---
