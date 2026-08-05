@@ -1,0 +1,44 @@
+---
+- name: Deploy Phase 5 - Registry Infrastructure Stack
+  hosts: dns_servers
+  gather_facts: false
+
+  vars:
+    registry_base_dir: "{{ lookup('env', 'HOME') }}/Shadow_Web/registry"
+    dns_network_name: "dns-net"
+
+  tasks:
+    - name: Ensure standardized DNS bridge network exists
+      containers.podman.podman_network:
+        name: "{{ dns_network_name }}"
+        state: present
+        subnet: "10.89.0.0/16"
+        gateway: "10.89.0.1"
+
+    - name: Ensure target registry directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ registry_base_dir }}/compose"
+        - "{{ registry_base_dir }}/database/migrations"
+        - "{{ registry_base_dir }}/api"
+        - "{{ registry_base_dir }}/publisher/zones"
+
+    - name: Deploy Registry Stack using Podman Compose
+      command: podman compose up -d --build
+      args:
+        chdir: "{{ registry_base_dir }}/compose"
+      register: compose_output
+      changed_when: "'Running' in compose_output.stdout or 'Creating' in compose_output.stdout"
+
+    - name: Verify Registry API Health Endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:8081/health"
+        method: GET
+        status_code: 200
+      register: health_check
+      retries: 5
+      delay: 3
+      until: health_check.status == 200

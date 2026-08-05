@@ -4,19 +4,22 @@
   connection: local
   gather_facts: false
 
-  vars:
-    podman_networks:
-      - internet-net
-      - dns-net
-      - registry-net
-      - hosting-net
-      - mail-net
-      - monitor-net
-      - storage-net
-
   tasks:
-    - name: Ensure dedicated Podman networks exist
+    - name: Ensure dns-net exists with /16 subnet for registrar and DNS mapping
+      containers.podman.podman_network:
+        name: "dns-net"
+        state: present
+        subnet: "10.89.0.0/16"
+        gateway: "10.89.0.1"
+
+    - name: Ensure remaining dedicated Podman networks exist
       containers.podman.podman_network:
         name: "{{ item }}"
         state: present
-      loop: "{{ podman_networks }}"
+      loop:
+        - internet-net
+        - registry-net
+        - hosting-net
+        - mail-net
+        - monitor-net
+        - storage-net
