@@ -19,32 +19,34 @@ The SLD tier resolves specific subdomains under custom Top-Level Domains (TLDs).
 
 ## Directory Structure
 
-```text
-dns/sld/
-├── example-x/
-│   ├── Corefile
-│   └── zone/
-│       └── db.example.x
-├── shop-web/
-│   ├── Corefile
-│   └── zone/
-│       └── db.shop.web
-├── shop-store/
-│   ├── Corefile
-│   └── zone/
-│       └── db.store.shop
-├── cloud-cluster/
-│   ├── Corefile
-│   └── zone/
-│       └── db.cluster.cloud
-├── mail-secure/
-│   ├── Corefile
-│   └── zone/
-│       └── db.secure.mail
-└── dev-lab/
+```bash
+~/Shadow_Web/dns/sld$ tree
+.
+├── cloud-cluster
+│   ├── Corefile
+│   └── zone
+│       └── db.cluster.cloud
+├── dev-lab
+│   ├── Corefile
+│   └── zone
+│       └── db.lab.dev
+├── example-x
+│   ├── Corefile
+│   └── zone
+│       └── db.example.x
+├── mail-secure
+│   ├── Corefile
+│   └── zone
+│       └── db.secure.mail
+├── readme.md
+├── shop-store
+│   ├── Corefile
+│   └── zone
+│       └── db.store.shop
+└── shop-web
     ├── Corefile
-    └── zone/
-        └── db.lab.dev
+    └── zone
+        └── db.shop.web
 ```
 
 ---
