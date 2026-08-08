@@ -1,5 +1,7 @@
 dev. {
-file /etc/coredns/zone/db.dev
+file /etc/coredns/zone/db.dev{
+        reload 5s
+    }
 log
 errors
 }

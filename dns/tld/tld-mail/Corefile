@@ -1,5 +1,7 @@
 mail. {
-file /etc/coredns/zone/db.mail
+file /etc/coredns/zone/db.mail{
+        reload 5s
+    }
 log
 errors
 }
