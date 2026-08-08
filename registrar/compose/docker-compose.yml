@@ -1,0 +1,20 @@
+version: '3.8'
+
+networks:
+  dns-net:
+    external: true
+
+services:
+  registrar-api:
+    image: docker.io/library/golang:1.22-alpine
+    container_name: registrar-api
+    working_dir: /app
+    volumes:
+      - ../api:/app:z
+    command: go run main.go
+    networks:
+      dns-net:
+        ipv4_address: 10.89.0.20
+    ports:
+      - "9090:9090"
+    restart: always
