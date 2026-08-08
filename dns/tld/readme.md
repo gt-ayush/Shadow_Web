@@ -30,34 +30,34 @@ This component establishes the authoritative Top-Level Domain (TLD) zone layer f
 
 ## 📁 Directory Structure
 
-```text
-dns/
-└── tld/
-    ├── tld-x/
-    │   ├── Corefile[cite: 11]
-    │   └── zone/
-    │       └── db.x[cite: 12]
-    ├── tld-web/
-    │   ├── Corefile[cite: 9]
-    │   └── zone/
-    │       └── db.web[cite: 10]
-    ├── tld-shop/
-    │   ├── Corefile[cite: 7]
-    │   └── zone/
-    │       └── db.shop[cite: 8]
-    ├── tld-cloud/
-    │   ├── Corefile[cite: 1]
-    │   └── zone/
-    │       └── db.cloud[cite: 2]
-    ├── tld-mail/
-    │   ├── Corefile[cite: 5]
-    │   └── zone/
-    │       └── db.mail[cite: 6]
-    └── tld-dev/
-        ├── Corefile[cite: 3]
-        └── zone/
-            └── db.dev[cite: 4]
-
+```bash
+~/Shadow_Web/dns/tld$ tree
+.
+├── readme.md
+├── tld-cloud
+│   ├── Corefile
+│   └── zone
+│       └── db.cloud
+├── tld-dev
+│   ├── Corefile
+│   └── zone
+│       └── db.dev
+├── tld-mail
+│   ├── Corefile
+│   └── zone
+│       └── db.mail
+├── tld-shop
+│   ├── Corefile
+│   └── zone
+│       └── db.shop
+├── tld-web
+│   ├── Corefile
+│   └── zone
+│       └── db.web
+└── tld-x
+    ├── Corefile
+    └── zone
+        └── db.x
 ```
 
 ---

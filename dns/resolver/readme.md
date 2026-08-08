@@ -16,12 +16,18 @@ This component provides the local recursive DNS resolution layer for the **Shado
 
 ## 📁 Directory Structure
 
-```text
-dns/
-└── resolver/
-    └── resolver-01/
-        ├── Corefile
-        └── compose.yaml
+```bash
+~/Shadow_Web/dns/resolver$ tree
+.
+├── issue.md
+├── readme.md
+└── resolver-01
+    ├── Corefile
+    ├── Dockerfile
+    ├── compose.yaml
+    └── config
+        ├── root.hints
+        └── unbound.conf
 
 ```
 
