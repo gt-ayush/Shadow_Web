@@ -1,5 +1,7 @@
 cloud. {
-file /etc/coredns/zone/db.cloud
+file /etc/coredns/zone/db.cloud{
+        reload 5s
+    }
 log
 errors
 }

@@ -1,5 +1,7 @@
 shop. {
-file /etc/coredns/zone/db.shop
+file /etc/coredns/zone/db.shop{
+        reload 5s
+    }
 log
 errors
 }

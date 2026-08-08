@@ -1,18 +1,22 @@
 $TTL 86400
-@   IN  SOA ns1.dns.x. admin.dns.x. (
-            2026080301 ; serial
-            3600       ; refresh
-            1800       ; retry
-            604800     ; expire
-            86400 )    ; minimum
+@   IN  SOA ns1.nic.x. hostmaster.nic.x. (
+        1786207528 ; Serial
+        3600       ; Refresh
+        1800       ; Retry
+        604800     ; Expire
+        86400 )    ; Minimum TTL
 
-@   IN  NS  ns1.dns.x.
-@   IN  NS  ns2.dns.x.
+@   IN  NS  ns1.nic.x.
 
-; Glue records for .x TLD NS itself
-ns1.dns.x.   IN  A   10.89.10.20
-ns2.dns.x.   IN  A   10.89.10.21
+; Delegations for hacker.x
+hacker.x. IN NS ns1.hacker.x.
+ns1.hacker.x. IN A  10.89.20.99
 
-; --- Subdomain / SLD Delegations ---
-example.x.  IN  NS  ns1.example.x.
-ns1.example.x. IN A 10.89.20.10
+; Delegations for phantom.x
+phantom.x. IN NS ns1.phantom.x.
+ns1.phantom.x. IN A  10.89.20.100
+
+; Delegations for shadow.x
+shadow.x. IN NS ns1.shadow.x.
+ns1.shadow.x. IN A  10.89.20.101
+

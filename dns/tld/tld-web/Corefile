@@ -1,5 +1,7 @@
 web. {
-    file /etc/coredns/zone/db.web
+    file /etc/coredns/zone/db.web{
+        reload 5s
+    }
     log
     errors
 }

@@ -228,7 +228,7 @@ func generateAndPublishZone(tld string) {
 
 	// 2. Build TLD Zone File Content
 	var sb strings.Builder
-	serial := time.Now().Format("2006010201")
+	serial := fmt.Sprintf("%d", time.Now().Unix())
 	sb.WriteString("$TTL 86400\n")
 	sb.WriteString(fmt.Sprintf("@   IN  SOA ns1.nic.%s. hostmaster.nic.%s. (\n", tld, tld))
 	sb.WriteString(fmt.Sprintf("        %s ; Serial\n", serial))
@@ -250,10 +250,12 @@ func generateAndPublishZone(tld string) {
 	}
 
 	// 3. Write zone file to published directory
-	zoneDirPath := os.Getenv("ZONE_OUTPUT_DIR")
-	if zoneDirPath == "" {
-		zoneDirPath = "/app/zones"
+	baseDir := os.Getenv("ZONE_OUTPUT_DIR")
+	if baseDir == "" {
+		baseDir = "/app/zones"
 	}
+
+	zoneDirPath := fmt.Sprintf("%s/tld-%s/zone", baseDir, tld)
 	if err := os.MkdirAll(zoneDirPath, 0755); err != nil {
 		log.Printf("Failed to create zone directory: %v", err)
 		return
